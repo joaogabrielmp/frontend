@@ -12,7 +12,7 @@ import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { Container, Content, AvatarInput } from './styles';
+import { AvatarInput, Container, Content } from './styles';
 
 interface ProfileFormData {
   name: string;
