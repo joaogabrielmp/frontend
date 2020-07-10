@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import SignIn from '../../pages/SignIn';
 
@@ -9,7 +9,9 @@ const mockedAddToast = jest.fn();
 
 jest.mock('react-router-dom', () => {
   return {
-    useHistory: jest.fn(),
+    useHistory: () => ({
+      push: mockedHistoryPush,
+    }),
     Link: ({ children }: { children: React.ReactNode }) => children,
   };
 });
@@ -31,6 +33,10 @@ jest.mock('../../hooks/toast', () => {
 });
 
 describe('SignIn', () => {
+  beforeEach(() => {
+    mockedHistoryPush.mockClear();
+  });
+
   it('should be able to sign in', async () => {
     const { getByPlaceholderText, getByText } = render(<SignIn />);
 
@@ -43,7 +49,7 @@ describe('SignIn', () => {
 
     fireEvent.click(buttonElement);
 
-    await wait(() => {
+    await waitFor(() => {
       expect(mockedHistoryPush).toHaveBeenCalledWith('/dashboard');
     });
   });
